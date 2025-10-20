@@ -40,7 +40,9 @@ public class DipendenteService {
 
     //GET SINGLE
     public  Dipendente findById(UUID id) { return this.dipendenteRepository.findById(id).orElseThrow(() -> new NotFoundException("Dipendente non presente in DB o id incorretto!"));}
-
+    public  Dipendente findByEmail(String email) { return this.dipendenteRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("L'utente inesistente o email incorretta"));}
+    
+    
     //POST
     public Dipendente saveDipendente(NewDipendenteDTO payload){
         List<String> errors = new ArrayList<>();
