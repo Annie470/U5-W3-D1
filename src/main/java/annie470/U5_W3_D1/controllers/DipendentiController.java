@@ -22,15 +22,6 @@ public class DipendentiController {
     @Autowired
     private DipendenteService dipendenteService;
 
-    //POST
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Dipendente salvaDipendente(@RequestBody @Validated NewDipendenteDTO body, BindingResult validationResult) {
-        if (validationResult.hasErrors()) {
-            throw new ValidationException(validationResult.getFieldErrors().stream().map(fieldError -> fieldError.getDefaultMessage()).toList());
-        }
-        return this.dipendenteService.saveDipendente(body);
-    }
 
     //GET ALL
         @GetMapping
