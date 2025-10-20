@@ -12,7 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@Component 
+@Component
 public class JwsFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTools jwtTools;
@@ -20,8 +20,8 @@ public class JwsFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
-        if(authHeader == null || !authHeader.startsWith("Bearer")) throw new UnauthorizedException("Token non presente");
-        String accessToken= authHeader.replace("Bearer", "");
+        if(authHeader == null || !authHeader.startsWith("Bearer ")) throw new UnauthorizedException("Token non presente");
+        String accessToken = authHeader.substring(7);
         jwtTools.verifyToken(accessToken);
         filterChain.doFilter(request, response);
     }
