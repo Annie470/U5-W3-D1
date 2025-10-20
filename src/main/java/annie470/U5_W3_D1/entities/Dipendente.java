@@ -27,11 +27,13 @@ public class Dipendente {
     @Column(nullable = false)
     private String email;
     private String avatar;
+    private String password;
 
-    public Dipendente(String nome, String cognome, String username, String email) {
+    public Dipendente(String nome, String cognome, String username, String email, String password) {
         this.nome = nome;
         this.cognome = cognome;
         this.username = username;
         this.email = email;
+        this.password=password;
     }
 }

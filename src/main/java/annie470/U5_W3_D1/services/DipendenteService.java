@@ -53,7 +53,7 @@ public class DipendenteService {
         if (!errors.isEmpty()) {
             throw new ValidationException(errors);
         }
-        Dipendente newDipendente = new Dipendente(payload.nome(), payload.cognome(), payload.username(), payload.email());
+        Dipendente newDipendente = new Dipendente(payload.nome(), payload.cognome(), payload.username(), payload.email(), payload.password());
         newDipendente.setAvatar("https://ui-avatars.com/api/?name=" + payload.nome() + "+" + payload.cognome());
         this.dipendenteRepository.save(newDipendente);
         return newDipendente;
