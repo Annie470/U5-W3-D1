@@ -8,6 +8,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 public class JwtTools {
@@ -25,5 +26,13 @@ public class JwtTools {
         } catch (Exception ex) {
             throw new UnauthorizedException("Non autorizzato!");
         }
+    }
+
+    public UUID extractIdFromToken(String accessToken) {
+        return UUID.fromString(Jwts.parser()
+                .verifyWith(Keys.hmacShaKeyFor(secret.getBytes())).build()
+                .parseSignedClaims(accessToken)
+                .getPayload()
+                .getSubject());
     }
 }

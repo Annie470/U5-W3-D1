@@ -1,19 +1,23 @@
 package annie470.U5_W3_D1.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Data
 @NoArgsConstructor
-public class Dipendente {
+@JsonIgnoreProperties({"password", "email", "id"})
+public class Dipendente implements UserDetails {
     @Id
     @GeneratedValue
     @Setter(AccessLevel.NONE)
@@ -28,6 +32,8 @@ public class Dipendente {
     private String email;
     private String avatar;
     private String password;
+    @Enumerated(EnumType.STRING)
+    private Ruolo ruolo;
 
     public Dipendente(String nome, String cognome, String username, String email, String password) {
         this.nome = nome;
@@ -35,5 +41,16 @@ public class Dipendente {
         this.username = username;
         this.email = email;
         this.password=password;
+        this.ruolo=Ruolo.USER;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(this.ruolo.name()));
+    }
+
+    @Override
+    public  String  getUsername(){
+        return this.email;
     }
 }

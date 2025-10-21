@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +26,8 @@ public class DipendenteService {
     private DipendenteRepository dipendenteRepository;
     @Autowired
     private Cloudinary imageUploader;
+    @Autowired
+    private PasswordEncoder bcrypt;
 
     private static final long MAX_SIZE = 5 * 1024 * 1024;
     private static final Set<String> ALLOWED_TYPES = Set.of( //GRAZIE INTERNET
@@ -55,7 +58,7 @@ public class DipendenteService {
         if (!errors.isEmpty()) {
             throw new ValidationException(errors);
         }
-        Dipendente newDipendente = new Dipendente(payload.nome(), payload.cognome(), payload.username(), payload.email(), payload.password());
+        Dipendente newDipendente = new Dipendente(payload.nome(), payload.cognome(), payload.username(), payload.email(), bcrypt.encode(payload.password()));
         newDipendente.setAvatar("https://ui-avatars.com/api/?name=" + payload.nome() + "+" + payload.cognome());
         this.dipendenteRepository.save(newDipendente);
         return newDipendente;
