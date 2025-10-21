@@ -67,7 +67,7 @@ public class DipendenteService {
     //PUT
     public Dipendente getAndUpdate(UUID id, NewDipendenteDTO payload) {
         Dipendente found = this.findById(id);
-        this.dipendenteRepository.findByEmail(payload.email()).ifPresent(dipendente -> {if(dipendente.getId() != id) {
+        this.dipendenteRepository.findByEmail(payload.email()).ifPresent(dipendente -> {if(!dipendente.getId().equals(id)) {
             throw new BadRequestException("Email già in utilizzo da altro dipendente!");
         }});
         this.dipendenteRepository.findByUsername(payload.username()).ifPresent(dipendente -> {

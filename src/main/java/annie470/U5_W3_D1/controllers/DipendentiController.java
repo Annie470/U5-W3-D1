@@ -27,7 +27,7 @@ public class DipendentiController {
 
     //GET ALL
         @GetMapping
-        @PreAuthorize("hasAuthority('ADMIN', 'USER')")
+        @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
         public Page<Dipendente> getAll(@RequestParam(defaultValue = "0") int pageN, @RequestParam(defaultValue = "10") int pageSize) {
             return this.dipendenteService.findAll(pageN, pageSize);
     }

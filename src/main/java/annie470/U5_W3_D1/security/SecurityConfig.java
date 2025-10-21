@@ -10,6 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -17,11 +18,12 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception  {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, JwsFilter jwsFilter) throws Exception  {
         httpSecurity.formLogin(formLogin -> formLogin.disable());
         httpSecurity.csrf((csrf -> csrf.disable()));
         httpSecurity.sessionManagement((sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS)));
         httpSecurity.authorizeHttpRequests(req -> req.requestMatchers("/**").permitAll());
+        httpSecurity.addFilterBefore(jwsFilter, UsernamePasswordAuthenticationFilter.class); //sennò tutti gli endpoint senza autenticazione hanno accesso
         return httpSecurity.build();
     }
 
